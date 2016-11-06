@@ -1,5 +1,5 @@
 ---
 layout: post
-title: Python: Test
+title: Python Test
 ---
 test test
