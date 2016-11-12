@@ -4,12 +4,8 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+Recent PhD graduate specialising in applied maths/economics. My thesis focused on applying network models to empirical data from international commodity markets. Previously worked as part of an inter-disciplinary team of scientists at Surrey University, developing computational tools for industrial policymaking.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+[craig.r.shenton@googlemail.com](mailto:craig.r.shenton@googlemail.com)
