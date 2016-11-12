@@ -3,7 +3,7 @@ code {
   font-family:'Bitstream Vera Sans Mono','Courier', monospace;
 }
 
-.markdown-body .highlight pre,.markdown-body pre {
+.highlight {
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   font-size: 13px;
@@ -11,21 +11,11 @@ code {
   overflow: auto;
   padding: 6px 10px;
   border-radius: 3px;
-}
-
-.markdown-body pre {
-  word-wrap: normal;
-}
-
-.markdown-body pre code,.markdown-body pre tt {
   margin: 0;
   padding: 0;
   background-color: transparent;
   border: none;
   word-wrap: normal;
-}
-
-.highlight {
   background: #ffffff;
 }
 
