@@ -12,7 +12,7 @@ tags:
 
 **In [1]:**
 
-{% highlight %}
+```python
 # code written in python_3. (for py_2.7 users some changes may be required)
 
 import matplotlib.pyplot as plt
@@ -25,7 +25,7 @@ import pandas # load pandas dataframe lib
 df_sales = pandas.read_excel(open('.../Concessions.xlsx','rb'), sheetname=0)
 df_sales = df_sales.iloc[0:, 0:4]
 df_sales.head() # use .head() to just show top 4 results
-{% endhighlight %}
+```
 
 
 
