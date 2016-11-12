@@ -2,13 +2,15 @@
 layout: post
 title: "data smart (chapter 1)"
 tags:
-    - python
+    - ipython
     - notebook
 ---
 
 
-##### Following chapter 1
-1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
+#### Chapter 1
+Following John W. Foreman's 2014 book "Data Smart: Using Data Science to Transform Information into Insight" using python.
+
+##### 1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
 
 **In [1]:**
 
@@ -139,7 +141,8 @@ df_sales['Price'].describe() # basic stats
 **In [5]:**
 
 ```python
-df_sales = df_sales.assign(Actual_Profit = df_sales['Price']*df_sales['Profit']) # adds new col
+# add new col == price*profit
+df_sales = df_sales.assign(Actual_Profit = df_sales['Price']*df_sales['Profit'])
 df_sales.head()
 ```
 
@@ -270,7 +273,8 @@ plt.show()
 **In [8]:**
 
 ```python
-df_sales = df_sales.assign(Calories=df_sales['Item'].map(df_cals['Calories'])) # map num calories from df_cals per item in df_sales (==Vlookup)
+# map num calories from df_cals per item in df_sales (==Vlookup)
+df_sales = df_sales.assign(Calories=df_sales['Item'].map(df_cals['Calories']))
 df_sales.head()
 ```
 
