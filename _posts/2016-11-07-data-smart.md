@@ -27,11 +27,8 @@ df_sales = df_sales.iloc[0:, 0:4]
 df_sales.head() # use .head() to just show top 4 results
 ```
 
-
-
-
 <div>
-<table border="1" class="dataframe">
+<table border="1">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -85,9 +82,9 @@ df_sales.head() # use .head() to just show top 4 results
 
 **In [2]:**
 
-{% highlight python %}
+```python
 df_sales.dtypes # explore the dataframe
-{% endhighlight %}
+```
 
 
 
@@ -100,11 +97,11 @@ df_sales.dtypes # explore the dataframe
 
 
 
-**In [54]:**
+**In [3]:**
 
-{% highlight python %}
+```python
 df_sales['Item'].head() # how to select a col
-{% endhighlight %}
+```
 
 
 
@@ -118,11 +115,11 @@ df_sales['Item'].head() # how to select a col
 
 
 
-**In [55]:**
+**In [4]:**
 
-{% highlight python %}
+```python
 df_sales['Price'].describe() # basic stats
-{% endhighlight %}
+```
 
 
 
@@ -141,16 +138,15 @@ df_sales['Price'].describe() # basic stats
 
 ##### 1.2 Calculate Actual Profit
 
-**In [56]:**
+**In [5]:**
 
-{% highlight python %}
+```python
 df_sales = df_sales.assign(Actual_Profit = df_sales['Price']*df_sales['Profit']) # adds new col
 df_sales.head()
-{% endhighlight %}
-
+```
 
 <div>
-<table border="1" class="dataframe">
+<table border="1">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -206,24 +202,19 @@ df_sales.head()
 </table>
 </div>
 
-
-
 ##### 1.3 Load data from 'Calories' worksheet and plot
 
-**In [60]:**
+**In [6]:**
 
-{% highlight python %}
+```python
 # find path to your Concessions.xlsx
 df_cals = pandas.read_excel(open('.../Concessions.xlsx','rb'), sheetname=1)
 df_cals = df_cals.iloc[0:14, 0:2] # take data from 'Calories' worksheet
 df_cals.head()
-{% endhighlight %}
-
-
-
+```
 
 <div>
-<table border="1" class="dataframe">
+<table border="1">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -261,18 +252,16 @@ df_cals.head()
 </table>
 </div>
 
+**In [7]:**
 
-
-**In [61]:**
-
-{% highlight python %}
+```python
 df_cals = df_cals.set_index('Item') # index df by items
 # Items ranked by calories = .sort_values(by='Calories',ascending=True)
 # rot = axis rotation
 ax = df_cals.sort_values(by='Calories',ascending=True).plot(kind='bar', title ="Calories",figsize=(15,5),legend=False, fontsize=10, alpha=0.75, rot=20,)
 plt.xlabel("") # no x-axis lable
 plt.show()
-{% endhighlight %}
+```
 
 
 ![png]({{ site.baseurl }}/notebooks/notebook_files/notebook_9_0.png)
@@ -280,15 +269,15 @@ plt.show()
 
 ##### 1.4 add calorie data to sales worksheet
 
-**In [62]:**
+**In [8]:**
 
-{% highlight python %}
+```python
 df_sales = df_sales.assign(Calories=df_sales['Item'].map(df_cals['Calories'])) # map num calories from df_cals per item in df_sales (==Vlookup)
 df_sales.head()
-{% endhighlight %}
+```
 
 <div>
-<table border="1" class="dataframe">
+<table border="1">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -349,7 +338,3 @@ df_sales.head()
   </tbody>
 </table>
 </div>
-
-{% highlight python %}
-
-{% endhighlight %}
