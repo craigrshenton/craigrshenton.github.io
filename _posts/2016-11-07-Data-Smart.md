@@ -1,15 +1,12 @@
 ---
 layout: post
-title: "notebook"
+title: "data smart (chapter 1)"
 tags:
     - python
     - notebook
 ---
 
-<span style="font-size: 4em;">
-
-
-##### 1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
+1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
 
 **In [52]:**
 
@@ -150,8 +147,6 @@ df_sales.head()
 {% endhighlight %}
 
 
-
-
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -217,7 +212,7 @@ df_sales.head()
 
 {% highlight python %}
 # find path to your Concessions.xlsx
-df_cals = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch01_complete/Concessions.xlsx','rb'), sheetname=1)
+df_cals = pandas.read_excel(open('.../Concessions.xlsx','rb'), sheetname=1)
 df_cals = df_cals.iloc[0:14, 0:2] # take data from 'Calories' worksheet
 df_cals.head()
 {% endhighlight %}
@@ -290,9 +285,6 @@ df_sales = df_sales.assign(Calories=df_sales['Item'].map(df_cals['Calories'])) #
 df_sales.head()
 {% endhighlight %}
 
-
-
-
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -356,12 +348,6 @@ df_sales.head()
 </table>
 </div>
 
-
-
-**In [None]:**
-
 {% highlight python %}
-
-</span>
 
 {% endhighlight %}
