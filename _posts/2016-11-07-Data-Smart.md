@@ -5,6 +5,10 @@ tags:
     - python
     - notebook
 ---
+
+<span style="font-size: 4em;">
+
+
 ##### 1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
 
 **In [52]:**
@@ -19,7 +23,7 @@ import pandas # load pandas dataframe lib
 # find path to your Concessions.xlsx
 # df = short for dataframe == excel worksheet
 # zero indexing in python, so first worksheet = 0
-df_sales = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch01_complete/Concessions.xlsx','rb'), sheetname=0) 
+df_sales = pandas.read_excel(open('.../Concessions.xlsx','rb'), sheetname=0)
 df_sales = df_sales.iloc[0:, 0:4]
 df_sales.head() # use .head() to just show top 4 results
 {% endhighlight %}
@@ -212,8 +216,8 @@ df_sales.head()
 **In [60]:**
 
 {% highlight python %}
-# find path to your Concessions.xlsx 
-df_cals = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch01_complete/Concessions.xlsx','rb'), sheetname=1) 
+# find path to your Concessions.xlsx
+df_cals = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch01_complete/Concessions.xlsx','rb'), sheetname=1)
 df_cals = df_cals.iloc[0:14, 0:2] # take data from 'Calories' worksheet
 df_cals.head()
 {% endhighlight %}
@@ -266,7 +270,7 @@ df_cals.head()
 
 {% highlight python %}
 df_cals = df_cals.set_index('Item') # index df by items
-# Items ranked by calories = .sort_values(by='Calories',ascending=True) 
+# Items ranked by calories = .sort_values(by='Calories',ascending=True)
 # rot = axis rotation
 ax = df_cals.sort_values(by='Calories',ascending=True).plot(kind='bar', title ="Calories",figsize=(15,5),legend=False, fontsize=10, alpha=0.75, rot=20,)
 plt.xlabel("") # no x-axis lable
@@ -357,5 +361,7 @@ df_sales.head()
 **In [None]:**
 
 {% highlight python %}
+
+</span>
 
 {% endhighlight %}
