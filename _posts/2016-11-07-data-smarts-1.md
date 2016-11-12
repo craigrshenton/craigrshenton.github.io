@@ -6,11 +6,9 @@ tags:
     - notebook
 ---
 
-Following John W. Foreman's 2014 book "Data Smart: Using Data Science to Transform Information into Insight" using python.
+Python translation of John W. Foreman's 2014 book "Data Smart: Using Data Science to Transform Information into Insight".
 
 **1.0** Download data from [http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip](http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip), extract Concessions.xlsx
-
-Notes: df = short for dataframe == excel worksheet. Also, we use zero indexing in python, so the first worksheet is indexed as 0
 
 **In [1]:**
 
@@ -21,8 +19,10 @@ import matplotlib.pyplot as plt
 matplotlib.style.use('ggplot')
 import pandas # load pandas dataframe lib
 
+# df = short for dataframe == excel worksheet
 # ...find path to your local Concessions.xlsx
 df_sales = pandas.read_excel(open('.../Concessions.xlsx','rb'), sheetname=0)
+# zero indexing in python, so first worksheet = 0
 df_sales = df_sales.iloc[0:, 0:4]
 df_sales.head() # use .head() to just show top 4 results
 ```
