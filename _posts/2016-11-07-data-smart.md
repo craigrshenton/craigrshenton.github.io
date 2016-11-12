@@ -28,7 +28,7 @@ df_sales.head() # use .head() to just show top 4 results
 ```
 
 <div>
- <table border="1">		
+ <table rules="groups"> 		
    <thead>		
      <tr style="text-align: right;">		
        <th></th>		
