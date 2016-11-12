@@ -13,7 +13,7 @@ tags:
 **In [1]:**
 
 ```python
-# code written in python_3.
+# python_3.
 
 import matplotlib.pyplot as plt
 matplotlib.style.use('ggplot')
