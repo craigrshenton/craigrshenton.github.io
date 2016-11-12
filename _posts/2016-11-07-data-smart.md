@@ -144,7 +144,7 @@ df_sales.head()
 ```
 
 <div>
-<table border="1">
+<table rules="groups">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -212,7 +212,7 @@ df_cals.head()
 ```
 
 <div>
-<table border="1">
+<table rules="groups">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -275,7 +275,7 @@ df_sales.head()
 ```
 
 <div>
-<table border="1">
+<table rules="groups">
   <thead>
     <tr style="text-align: right;">
       <th></th>
