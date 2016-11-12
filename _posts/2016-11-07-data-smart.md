@@ -6,11 +6,13 @@ tags:
     - notebook
 ---
 
+
+##### Following chapter 1
 1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
 
-**In [52]:**
+**In [1]:**
 
-{% highlight python %}
+{% highlight %}
 # code written in python_3. (for py_2.7 users some changes may be required)
 
 import matplotlib.pyplot as plt
@@ -81,7 +83,7 @@ df_sales.head() # use .head() to just show top 4 results
 
 
 
-**In [53]:**
+**In [2]:**
 
 {% highlight python %}
 df_sales.dtypes # explore the dataframe
