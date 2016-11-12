@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "data smart ch.1"
+title: "Data smarts in python- 1.0 basics"
 tags:
     - ipython
     - notebook
