@@ -27,58 +27,13 @@ df_sales = df_sales.iloc[0:, 0:4]
 df_sales.head() # use .head() to just show top 4 results
 ```
 
-<div>
-<table border="1">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Item</th>
-      <th>Category</th>
-      <th>Price</th>
-      <th>Profit</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Beer</td>
-      <td>Beverages</td>
-      <td>4.0</td>
-      <td>0.500000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Hamburger</td>
-      <td>Hot Food</td>
-      <td>3.0</td>
-      <td>0.666667</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Popcorn</td>
-      <td>Hot Food</td>
-      <td>5.0</td>
-      <td>0.800000</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Pizza</td>
-      <td>Hot Food</td>
-      <td>2.0</td>
-      <td>0.250000</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Bottled Water</td>
-      <td>Beverages</td>
-      <td>3.0</td>
-      <td>0.833333</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
+ |  | Item | Category | Price | Profit | 
+  -- ------ ---------- ------- --------
+ | 0 | Beer | Beverages | 4.0 | 0.500000 |
+ | 1 | Hamburger | Hot Food | 3.0 | 0.666667 |
+ | 2 | Popcorn | Hot Food | 5.0 | 0.800000 | 
+ | 3 | Pizza | Hot Food | 2.0 | 0.250000 
+ | 4 | Bottled Water | Beverages | 3.0 | 0.833333  |
 
 **In [2]:**
 
