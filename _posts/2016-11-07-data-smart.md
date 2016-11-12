@@ -76,7 +76,7 @@ df_sales.head() # use .head() to just show top 4 results
      </tr>		
    </tbody>		
  </table>		
- </div>
+</div>
 
 **In [2]:**
 
