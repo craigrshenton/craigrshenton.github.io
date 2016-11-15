@@ -58,7 +58,7 @@ df_cals.head()
 
 <!--more-->
 
-Add calorie data to the sales worksheet using panadas *series*.map. This is the equivalent of *Vlooup* in excel.
+Add calorie data to the sales worksheet using panadas *series*.map. This is the equivalent of *Vlookup* in excel.
 
 **In [2]:**
 
