@@ -7,14 +7,15 @@ tags:
 ---
 ##### 1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
 
-**In [52]:**
+**In [22]:**
 
 {% highlight python %}
 # code written in python_3. (for py_2.7 users some changes may be required)
 
-import matplotlib.pyplot as plt
-matplotlib.style.use('ggplot')
 import pandas # load pandas dataframe lib
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+import numpy as np
 
 # find path to your Concessions.xlsx
 # df = short for dataframe == excel worksheet
@@ -80,7 +81,7 @@ df_sales.head() # use .head() to just show top 4 results
 
 
 
-**In [53]:**
+**In [5]:**
 
 {% highlight python %}
 df_sales.dtypes # explore the dataframe
@@ -97,7 +98,7 @@ df_sales.dtypes # explore the dataframe
 
 
 
-**In [54]:**
+**In [6]:**
 
 {% highlight python %}
 df_sales['Item'].head() # how to select a col
@@ -115,7 +116,7 @@ df_sales['Item'].head() # how to select a col
 
 
 
-**In [55]:**
+**In [7]:**
 
 {% highlight python %}
 df_sales['Price'].describe() # basic stats
@@ -138,7 +139,7 @@ df_sales['Price'].describe() # basic stats
 
 ##### 1.2 Calculate Actual Profit
 
-**In [56]:**
+**In [8]:**
 
 {% highlight python %}
 df_sales = df_sales.assign(Actual_Profit = df_sales['Price']*df_sales['Profit']) # adds new col
@@ -209,7 +210,7 @@ df_sales.head()
 
 ##### 1.3 Load data from 'Calories' worksheet and plot
 
-**In [60]:**
+**In [9]:**
 
 {% highlight python %}
 # find path to your Concessions.xlsx 
@@ -262,7 +263,7 @@ df_cals.head()
 
 
 
-**In [61]:**
+**In [15]:**
 
 {% highlight python %}
 df_cals = df_cals.set_index('Item') # index df by items
@@ -279,7 +280,7 @@ plt.show()
 
 ##### 1.4 add calorie data to sales worksheet
 
-**In [62]:**
+**In [42]:**
 
 {% highlight python %}
 df_sales = df_sales.assign(Calories=df_sales['Item'].map(df_cals['Calories'])) # map num calories from df_cals per item in df_sales (==Vlookup)
@@ -298,7 +299,6 @@ df_sales.head()
       <th>Category</th>
       <th>Price</th>
       <th>Profit</th>
-      <th>Actual_Profit</th>
       <th>Calories</th>
     </tr>
   </thead>
@@ -309,7 +309,6 @@ df_sales.head()
       <td>Beverages</td>
       <td>4.0</td>
       <td>0.500000</td>
-      <td>2.0</td>
       <td>200</td>
     </tr>
     <tr>
@@ -318,7 +317,6 @@ df_sales.head()
       <td>Hot Food</td>
       <td>3.0</td>
       <td>0.666667</td>
-      <td>2.0</td>
       <td>320</td>
     </tr>
     <tr>
@@ -327,7 +325,6 @@ df_sales.head()
       <td>Hot Food</td>
       <td>5.0</td>
       <td>0.800000</td>
-      <td>4.0</td>
       <td>500</td>
     </tr>
     <tr>
@@ -336,7 +333,6 @@ df_sales.head()
       <td>Hot Food</td>
       <td>2.0</td>
       <td>0.250000</td>
-      <td>0.5</td>
       <td>480</td>
     </tr>
     <tr>
@@ -345,8 +341,223 @@ df_sales.head()
       <td>Beverages</td>
       <td>3.0</td>
       <td>0.833333</td>
-      <td>2.5</td>
       <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+##### 1.5 pivot table: number of sales per item
+
+**In [96]:**
+
+{% highlight python %}
+pivot = pandas.pivot_table(df_sales, index=["Item"], values=["Price"], aggfunc=len) # len == 'count of price'
+pivot.columns = ['Count'] # renames col
+pivot.index.name = None # removes intex title which is not needed
+pivot
+{% endhighlight %}
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Beer</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>Bottled Water</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Chocolate Bar</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Chocolate Dipped Cone</th>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>Gummy Bears</th>
+      <td>14.0</td>
+    </tr>
+    <tr>
+      <th>Hamburger</th>
+      <td>16.0</td>
+    </tr>
+    <tr>
+      <th>Hot Dog</th>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>Ice Cream Sandwich</th>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>Licorice Rope</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Nachos</th>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>Pizza</th>
+      <td>17.0</td>
+    </tr>
+    <tr>
+      <th>Popcorn</th>
+      <td>16.0</td>
+    </tr>
+    <tr>
+      <th>Popsicle</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Soda</th>
+      <td>13.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+##### 1.6 pivot table: revenue per item / category
+
+**In [108]:**
+
+{% highlight python %}
+# revenue = price * number of sales
+pivot = pandas.pivot_table(df_sales, index=["Item"], values=["Price"], columns=["Category"], aggfunc=np.sum, fill_value='')
+pivot.index.name = None
+pivot.columns = pivot.columns.get_level_values(1) # sets cols to product categories
+pivot
+{% endhighlight %}
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Category</th>
+      <th>Beverages</th>
+      <th>Candy</th>
+      <th>Frozen Treats</th>
+      <th>Hot Food</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Beer</th>
+      <td>80</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Bottled Water</th>
+      <td>39</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Chocolate Bar</th>
+      <td></td>
+      <td>26</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Chocolate Dipped Cone</th>
+      <td></td>
+      <td></td>
+      <td>33</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Gummy Bears</th>
+      <td></td>
+      <td>28</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Hamburger</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>Hot Dog</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>22.5</td>
+    </tr>
+    <tr>
+      <th>Ice Cream Sandwich</th>
+      <td></td>
+      <td></td>
+      <td>30</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Licorice Rope</th>
+      <td></td>
+      <td>26</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Nachos</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <th>Pizza</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <th>Popcorn</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <th>Popsicle</th>
+      <td></td>
+      <td></td>
+      <td>39</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>Soda</th>
+      <td>32.5</td>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
   </tbody>
 </table>
