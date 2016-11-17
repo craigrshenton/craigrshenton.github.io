@@ -6,89 +6,9 @@ tags:
     - notebook
 ---
 
-Continuing from chapter 1. Make a pivot table for number of sales per item
+Continuing from chapter 1. Make a pivot table for revenue per item / category
 
 **In [1]:**
-
-```python
-pivot = pandas.pivot_table(df_sales, index=["Item"], values=["Price"], aggfunc=len) # len == 'count of price'
-pivot.columns = ['Count'] # renames col
-pivot.index.name = None # removes intex title which is not needed
-pivot
-```
-
-<div>
-<table rules="groups">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Count</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Beer</th>
-      <td>20.0</td>
-    </tr>
-    <tr>
-      <th>Bottled Water</th>
-      <td>13.0</td>
-    </tr>
-    <tr>
-      <th>Chocolate Bar</th>
-      <td>13.0</td>
-    </tr>
-    <tr>
-      <th>Chocolate Dipped Cone</th>
-      <td>11.0</td>
-    </tr>
-    <tr>
-      <th>Gummy Bears</th>
-      <td>14.0</td>
-    </tr>
-    <tr>
-      <th>Hamburger</th>
-      <td>16.0</td>
-    </tr>
-    <tr>
-      <th>Hot Dog</th>
-      <td>15.0</td>
-    </tr>
-    <tr>
-      <th>Ice Cream Sandwich</th>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>Licorice Rope</th>
-      <td>13.0</td>
-    </tr>
-    <tr>
-      <th>Nachos</th>
-      <td>15.0</td>
-    </tr>
-    <tr>
-      <th>Pizza</th>
-      <td>17.0</td>
-    </tr>
-    <tr>
-      <th>Popcorn</th>
-      <td>16.0</td>
-    </tr>
-    <tr>
-      <th>Popsicle</th>
-      <td>13.0</td>
-    </tr>
-    <tr>
-      <th>Soda</th>
-      <td>13.0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-Make a pivot table for revenue per item / category
-
-**In [2]:**
 
 ```python
 # revenue = price * number of sales
@@ -97,9 +17,6 @@ pivot.index.name = None
 pivot.columns = pivot.columns.get_level_values(1) # sets cols to product categories
 pivot
 ```
-
-
-
 
 <div>
 <table rules="groups">
@@ -210,6 +127,88 @@ pivot
       <td></td>
       <td></td>
       <td></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!--more-->
+
+Make a pivot table for number of sales per item
+
+**In [2]:**
+
+```python
+pivot = pandas.pivot_table(df_sales, index=["Item"], values=["Price"], aggfunc=len) # len == 'count of price'
+pivot.columns = ['Count'] # renames col
+pivot.index.name = None # removes intex title which is not needed
+pivot
+```
+
+<div>
+<table rules="groups">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Beer</th>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>Bottled Water</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Chocolate Bar</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Chocolate Dipped Cone</th>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>Gummy Bears</th>
+      <td>14.0</td>
+    </tr>
+    <tr>
+      <th>Hamburger</th>
+      <td>16.0</td>
+    </tr>
+    <tr>
+      <th>Hot Dog</th>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>Ice Cream Sandwich</th>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>Licorice Rope</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Nachos</th>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>Pizza</th>
+      <td>17.0</td>
+    </tr>
+    <tr>
+      <th>Popcorn</th>
+      <td>16.0</td>
+    </tr>
+    <tr>
+      <th>Popsicle</th>
+      <td>13.0</td>
+    </tr>
+    <tr>
+      <th>Soda</th>
+      <td>13.0</td>
     </tr>
   </tbody>
 </table>
