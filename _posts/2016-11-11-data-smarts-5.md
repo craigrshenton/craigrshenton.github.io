@@ -1,10 +1,12 @@
 ---
 layout: post
-title: "notebook"
+title: "Data smarts in python- 1.4 linear programming"
 tags:
     - python
     - notebook
 ---
+
+Continuing from chapter 1. Find the minimum number of items to order that total 2400 calories
 
 **In [1]:**
 
@@ -59,7 +61,7 @@ cost
      'Popsicle': 150,
      'Soda': 120}
 
-
+<!--more-->
 
 **In [3]:**
 
@@ -124,6 +126,7 @@ print("Minimum Number of Items = ", value(prob.objective))
 ```
 
     Status: Optimal
+    
     Number_of_Beer = 0.0
     Number_of_Bottled_Water = 0.0
     Number_of_Chocolate_Bar = 0.0
@@ -138,4 +141,5 @@ print("Minimum Number of Items = ", value(prob.objective))
     Number_of_Popcorn = 0.0
     Number_of_Popsicle = 0.0
     Number_of_Soda = 0.0
+    
     Minimum Number of Items =  5.0
