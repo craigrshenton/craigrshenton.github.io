@@ -1,29 +1,26 @@
 ---
 layout: post
-title: "notebook"
+title: "Data smarts in python- 1.3 pivot table"
 tags:
     - python
     - notebook
 ---
 
-##### 1.5 pivot table: number of sales per item
+Continuing from chapter 1. Make a pivot table for number of sales per item
 
 **In [1]:**
 
-{% highlight python %}
+```python
 pivot = pandas.pivot_table(df_sales, index=["Item"], values=["Price"], aggfunc=len) # len == 'count of price'
 pivot.columns = ['Count'] # renames col
 pivot.index.name = None # removes intex title which is not needed
 pivot
-{% endhighlight %}
-
-
-
+```
 
 <div>
-<table border="1" class="dataframe">
+<table rules="groups">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th></th>
       <th>Count</th>
     </tr>
@@ -89,27 +86,25 @@ pivot
 </table>
 </div>
 
-
-
-##### 1.6 pivot table: revenue per item / category
+Make a pivot table for revenue per item / category
 
 **In [2]:**
 
-{% highlight python %}
+```python
 # revenue = price * number of sales
 pivot = pandas.pivot_table(df_sales, index=["Item"], values=["Price"], columns=["Category"], aggfunc=np.sum, fill_value='')
 pivot.index.name = None
 pivot.columns = pivot.columns.get_level_values(1) # sets cols to product categories
 pivot
-{% endhighlight %}
+```
 
 
 
 
 <div>
-<table border="1" class="dataframe">
+<table rules="groups">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Category</th>
       <th>Beverages</th>
       <th>Candy</th>
@@ -220,10 +215,3 @@ pivot
 </table>
 </div>
 
-
-
-**In [None]:**
-
-{% highlight python %}
-
-{% endhighlight %}
