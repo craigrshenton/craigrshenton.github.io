@@ -7,7 +7,7 @@ tags:
 ---
 ##### 1.0 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch01.zip, Concessions.xlsx
 
-**In [22]:**
+**In [1]:**
 
 {% highlight python %}
 # code written in python_3. (for py_2.7 users some changes may be required)
@@ -81,7 +81,7 @@ df_sales.head() # use .head() to just show top 4 results
 
 
 
-**In [5]:**
+**In [2]:**
 
 {% highlight python %}
 df_sales.dtypes # explore the dataframe
@@ -98,7 +98,7 @@ df_sales.dtypes # explore the dataframe
 
 
 
-**In [6]:**
+**In [3]:**
 
 {% highlight python %}
 df_sales['Item'].head() # how to select a col
@@ -116,7 +116,7 @@ df_sales['Item'].head() # how to select a col
 
 
 
-**In [7]:**
+**In [4]:**
 
 {% highlight python %}
 df_sales['Price'].describe() # basic stats
@@ -139,7 +139,7 @@ df_sales['Price'].describe() # basic stats
 
 ##### 1.2 Calculate Actual Profit
 
-**In [8]:**
+**In [5]:**
 
 {% highlight python %}
 df_sales = df_sales.assign(Actual_Profit = df_sales['Price']*df_sales['Profit']) # adds new col
@@ -210,7 +210,7 @@ df_sales.head()
 
 ##### 1.3 Load data from 'Calories' worksheet and plot
 
-**In [9]:**
+**In [45]:**
 
 {% highlight python %}
 # find path to your Concessions.xlsx 
@@ -263,7 +263,7 @@ df_cals.head()
 
 
 
-**In [15]:**
+**In [46]:**
 
 {% highlight python %}
 df_cals = df_cals.set_index('Item') # index df by items
@@ -280,7 +280,7 @@ plt.show()
 
 ##### 1.4 add calorie data to sales worksheet
 
-**In [42]:**
+**In [8]:**
 
 {% highlight python %}
 df_sales = df_sales.assign(Calories=df_sales['Item'].map(df_cals['Calories'])) # map num calories from df_cals per item in df_sales (==Vlookup)
@@ -299,6 +299,7 @@ df_sales.head()
       <th>Category</th>
       <th>Price</th>
       <th>Profit</th>
+      <th>Actual_Profit</th>
       <th>Calories</th>
     </tr>
   </thead>
@@ -309,6 +310,7 @@ df_sales.head()
       <td>Beverages</td>
       <td>4.0</td>
       <td>0.500000</td>
+      <td>2.0</td>
       <td>200</td>
     </tr>
     <tr>
@@ -317,6 +319,7 @@ df_sales.head()
       <td>Hot Food</td>
       <td>3.0</td>
       <td>0.666667</td>
+      <td>2.0</td>
       <td>320</td>
     </tr>
     <tr>
@@ -325,6 +328,7 @@ df_sales.head()
       <td>Hot Food</td>
       <td>5.0</td>
       <td>0.800000</td>
+      <td>4.0</td>
       <td>500</td>
     </tr>
     <tr>
@@ -333,6 +337,7 @@ df_sales.head()
       <td>Hot Food</td>
       <td>2.0</td>
       <td>0.250000</td>
+      <td>0.5</td>
       <td>480</td>
     </tr>
     <tr>
@@ -341,6 +346,7 @@ df_sales.head()
       <td>Beverages</td>
       <td>3.0</td>
       <td>0.833333</td>
+      <td>2.5</td>
       <td>0</td>
     </tr>
   </tbody>
@@ -351,7 +357,7 @@ df_sales.head()
 
 ##### 1.5 pivot table: number of sales per item
 
-**In [96]:**
+**In [9]:**
 
 {% highlight python %}
 pivot = pandas.pivot_table(df_sales, index=["Item"], values=["Price"], aggfunc=len) # len == 'count of price'
@@ -436,7 +442,7 @@ pivot
 
 ##### 1.6 pivot table: revenue per item / category
 
-**In [108]:**
+**In [10]:**
 
 {% highlight python %}
 # revenue = price * number of sales
@@ -564,6 +570,141 @@ pivot
 </div>
 
 
+
+**In [64]:**
+
+{% highlight python %}
+# set up decision variables
+items = df_cals.index.tolist()
+items
+{% endhighlight %}
+
+
+
+
+    ['Beer',
+     'Bottled Water',
+     'Chocolate Bar',
+     'Chocolate Dipped Cone',
+     'Gummy Bears',
+     'Hamburger',
+     'Hot Dog',
+     'Ice Cream Sandwich',
+     'Licorice Rope',
+     'Nachos',
+     'Pizza',
+     'Popcorn',
+     'Popsicle',
+     'Soda']
+
+
+
+**In [66]:**
+
+{% highlight python %}
+cost = dict(zip(df_cals.index, df_cals.Calories)) # calarific cost of each item
+cost
+{% endhighlight %}
+
+
+
+
+    {'Beer': 200,
+     'Bottled Water': 0,
+     'Chocolate Bar': 255,
+     'Chocolate Dipped Cone': 300,
+     'Gummy Bears': 300,
+     'Hamburger': 320,
+     'Hot Dog': 265,
+     'Ice Cream Sandwich': 240,
+     'Licorice Rope': 280,
+     'Nachos': 560,
+     'Pizza': 480,
+     'Popcorn': 500,
+     'Popsicle': 150,
+     'Soda': 120}
+
+
+
+**In [109]:**
+
+{% highlight python %}
+from pulp import *
+# create the LinProg object, set up as a minimisation problem
+prob = pulp.LpProblem('Diet', pulp.LpMinimize)
+
+vars = LpVariable.dicts("Number of",items, lowBound = 0, cat='Integer')
+# Obj Func
+prob += lpSum([cost[c]*vars[c] for c in items])
+
+prob += sum(vars[c] for c in items)
+
+# add constraint representing demand for soldiers
+prob += (lpSum([cost[c]*vars[c] for c in items]) == 2400)
+
+print(prob)
+{% endhighlight %}
+
+    Diet:
+    MINIMIZE
+    1*Number_of_Beer + 1*Number_of_Bottled_Water + 1*Number_of_Chocolate_Bar + 1*Number_of_Chocolate_Dipped_Cone + 1*Number_of_Gummy_Bears + 1*Number_of_Hamburger + 1*Number_of_Hot_Dog + 1*Number_of_Ice_Cream_Sandwich + 1*Number_of_Licorice_Rope + 1*Number_of_Nachos + 1*Number_of_Pizza + 1*Number_of_Popcorn + 1*Number_of_Popsicle + 1*Number_of_Soda + 0
+    SUBJECT TO
+    _C1: 200 Number_of_Beer + 255 Number_of_Chocolate_Bar
+     + 300 Number_of_Chocolate_Dipped_Cone + 300 Number_of_Gummy_Bears
+     + 320 Number_of_Hamburger + 265 Number_of_Hot_Dog
+     + 240 Number_of_Ice_Cream_Sandwich + 280 Number_of_Licorice_Rope
+     + 560 Number_of_Nachos + 480 Number_of_Pizza + 500 Number_of_Popcorn
+     + 150 Number_of_Popsicle + 120 Number_of_Soda = 2400
+    
+    VARIABLES
+    0 <= Number_of_Beer Integer
+    0 <= Number_of_Bottled_Water Integer
+    0 <= Number_of_Chocolate_Bar Integer
+    0 <= Number_of_Chocolate_Dipped_Cone Integer
+    0 <= Number_of_Gummy_Bears Integer
+    0 <= Number_of_Hamburger Integer
+    0 <= Number_of_Hot_Dog Integer
+    0 <= Number_of_Ice_Cream_Sandwich Integer
+    0 <= Number_of_Licorice_Rope Integer
+    0 <= Number_of_Nachos Integer
+    0 <= Number_of_Pizza Integer
+    0 <= Number_of_Popcorn Integer
+    0 <= Number_of_Popsicle Integer
+    0 <= Number_of_Soda Integer
+    
+    
+
+**In [110]:**
+
+{% highlight python %}
+prob.solve()
+
+# Is the solution optimal?
+print("Status:", LpStatus[prob.status])
+# Each of the variables is printed with it's value
+for v in prob.variables():
+    print(v.name, "=", v.varValue)
+# The optimised objective function value is printed to the screen    
+print("Minimum Number of Items = ", value(prob.objective))
+{% endhighlight %}
+
+    Status: Optimal
+    Number_of_Beer = 0.0
+    Number_of_Bottled_Water = 0.0
+    Number_of_Chocolate_Bar = 0.0
+    Number_of_Chocolate_Dipped_Cone = 0.0
+    Number_of_Gummy_Bears = 0.0
+    Number_of_Hamburger = 0.0
+    Number_of_Hot_Dog = 0.0
+    Number_of_Ice_Cream_Sandwich = 0.0
+    Number_of_Licorice_Rope = 0.0
+    Number_of_Nachos = 0.0
+    Number_of_Pizza = 5.0
+    Number_of_Popcorn = 0.0
+    Number_of_Popsicle = 0.0
+    Number_of_Soda = 0.0
+    Minimum Number of Items =  5.0
+    
 
 **In [None]:**
 
