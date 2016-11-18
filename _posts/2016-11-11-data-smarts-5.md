@@ -72,9 +72,7 @@ prob = pulp.LpProblem('Diet', pulp.LpMinimize)
 
 vars = LpVariable.dicts("Number of",items, lowBound = 0, cat='Integer')
 # Obj Func
-prob += lpSum([cost[c]*vars[c] for c in items])
-
-prob += sum(vars[c] for c in items)
+prob += sum(vars[c] for c in items) # minimise num of items
 
 # add constraint to total calories
 prob += (lpSum([cost[c]*vars[c] for c in items]) == 2400)
