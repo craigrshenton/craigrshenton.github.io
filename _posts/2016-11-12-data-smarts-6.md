@@ -6,6 +6,8 @@ tags:
     - notebook
 ---
 
+Contunuing with my python translation of John W. Foreman's 2014 book "Data Smart: Using Data Science to Transform Information into Insight". Chapter 2. covers k-means clustering using 'scikit-learn', a machine learning python library.
+
 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch02.zip, WineKMC.xlsx
 
 **In [1]:**
@@ -138,12 +140,12 @@ df_sales.head()
 </table>
 </div>
 
+We now want a pivot table of customer orders
+
 **In [3]:**
 
 ```python
 pivot = pandas.pivot_table(df_sales, index=["Offer #"], columns=["Customer Last Name"], aggfunc=len, fill_value='0')
-#pivot.index.name = None
-#pivot.columns = pivot.columns.get_level_values(1) # sets cols to product categories
 pivot.head()
 ```
 
@@ -325,6 +327,9 @@ pivot.head()
 <p>5 rows × 100 columns</p>
 </div>
 
+To use this data in scikit-learn we need to convert to a numpy matrix and transpose, so that we are measuring
+the Euclidean distance between customers rather than offers
+
 **In [4]:**
 
 ```python
@@ -335,6 +340,8 @@ X = np.matrix(X)
 # take the transpose of x
 X = X.T
 ```
+
+Run k-means to segment the customers into 4 clusters
 
 **In [5]:**
 
@@ -428,6 +435,8 @@ df_names.head()
 </table>
 </div>
 
+Check how many clusters are optimal for this dataset by measuring the silhouette score of each n-cluster
+
 **In [8]:**
 
 ```python
@@ -451,4 +460,4 @@ for n_clusters in range_n_clusters:
     For n_clusters = 6 The average silhouette_score is : 0.137179893911
     For n_clusters = 7 The average silhouette_score is : 0.116109245662
     
-kmeans with 5 clusters is optimal for this dataset
+kmeans with 5 clusters is optimal
