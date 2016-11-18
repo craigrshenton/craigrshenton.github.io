@@ -6,7 +6,7 @@ tags:
     - notebook
 ---
 
-Contunuing with my python translation of John W. Foreman's 2014 book "Data Smart: Using Data Science to Transform Information into Insight". Chapter 2. covers k-means clustering using 'scikit-learn', a machine learning python library.
+Contunuing with my python translation of John W. Foreman's 2014 book "Data Smart: Using Data Science to Transform Information into Insight". Chapter 2 covers k-means clustering using 'scikit-learn', a machine learning python library.
 
 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch02.zip, WineKMC.xlsx
 
@@ -21,7 +21,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
 
 # find path to your WineKMC.xlsx
-df_offers = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch02/WineKMC.xlsx','rb'), sheetname=0) 
+df_offers = pandas.read_excel(open('.../WineKMC.xlsx','rb'), sheetname=0) 
 df_offers.head() # use .head() to just show top 5 results
 ```
 
@@ -164,35 +164,9 @@ pivot.head()
       <th>Barnes</th>
       <th>Bell</th>
       <th>Bennett</th>
-      <th>Brooks</th>
-      <th>Brown</th>
-      <th>...</th>
-      <th>Turner</th>
-      <th>Walker</th>
-      <th>Ward</th>
-      <th>Watson</th>
-      <th>White</th>
-      <th>Williams</th>
-      <th>Wilson</th>
-      <th>Wood</th>
-      <th>Wright</th>
-      <th>Young</th>
     </tr>
     <tr>
       <th>Offer #</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -213,20 +187,6 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -236,21 +196,7 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <td>1</td>  
     </tr>
     <tr>
       <th>3</th>
@@ -260,21 +206,7 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <td>0</td> 
     </tr>
     <tr>
       <th>4</th>
@@ -287,18 +219,6 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
     </tr>
     <tr>
       <th>5</th>
@@ -309,24 +229,10 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 100 columns</p>
+<p>32 rows × 100 columns</p>
 </div>
 
 To use this data in scikit-learn we need to convert to a numpy matrix and transpose, so that we are measuring
@@ -343,7 +249,7 @@ X = np.matrix(X)
 X = X.T
 ```
 
-Run k-means to segment the customers into 4 clusters
+Run 'kMeans' to segment the customers into 4 clusters
 
 **In [5]:**
 
@@ -359,6 +265,7 @@ kmeans
            1, 1, 1, 1, 2, 1, 2, 3, 1, 1, 3, 0, 0, 1, 3, 2, 2, 2, 0, 0, 1, 1, 2,
            1, 2, 1, 1, 2, 1, 1, 0])
 
+Align cluster values to a list of customer names
 
 **In [6]:**
 
