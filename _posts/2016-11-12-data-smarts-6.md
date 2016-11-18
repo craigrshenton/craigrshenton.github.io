@@ -99,7 +99,7 @@ df_offers.head() # use .head() to just show top 5 results
 **In [2]:**
 
 ```python
-df_sales = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch02/WineKMC.xlsx','rb'), sheetname=1) 
+df_sales = pandas.read_excel(open('.../WineKMC.xlsx','rb'), sheetname=1) 
 df_sales.head()
 ```
 
