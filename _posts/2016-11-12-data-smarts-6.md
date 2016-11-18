@@ -1,15 +1,16 @@
 ---
 layout: post
-title: "notebook1"
+title: "Data smarts in python- 2.0 k-means clustering"
 tags:
     - python
     - notebook
 ---
+
 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch02.zip, WineKMC.xlsx
 
-**In [85]:**
+**In [1]:**
 
-{% highlight python %}
+```python
 # code written in py_3.0
 
 import pandas
@@ -20,15 +21,12 @@ from sklearn.metrics import silhouette_samples, silhouette_score
 # find path to your WineKMC.xlsx
 df_offers = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch02/WineKMC.xlsx','rb'), sheetname=0) 
 df_offers.head() # use .head() to just show top 5 results
-{% endhighlight %}
-
-
-
+```
 
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th></th>
       <th>Offer #</th>
       <th>Campaign</th>
@@ -94,22 +92,17 @@ df_offers.head() # use .head() to just show top 5 results
 </table>
 </div>
 
+**In [2]:**
 
-
-**In [4]:**
-
-{% highlight python %}
+```python
 df_sales = pandas.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch02/WineKMC.xlsx','rb'), sheetname=1) 
 df_sales.head()
-{% endhighlight %}
-
-
-
+```
 
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th></th>
       <th>Customer Last Name</th>
       <th>Offer #</th>
@@ -145,24 +138,19 @@ df_sales.head()
 </table>
 </div>
 
+**In [3]:**
 
-
-**In [19]:**
-
-{% highlight python %}
+```python
 pivot = pandas.pivot_table(df_sales, index=["Offer #"], columns=["Customer Last Name"], aggfunc=len, fill_value='0')
 #pivot.index.name = None
 #pivot.columns = pivot.columns.get_level_values(1) # sets cols to product categories
 pivot.head()
-{% endhighlight %}
-
-
-
+```
 
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th>Customer Last Name</th>
       <th>Adams</th>
       <th>Allen</th>
@@ -337,29 +325,24 @@ pivot.head()
 <p>5 rows × 100 columns</p>
 </div>
 
+**In [4]:**
 
-
-**In [64]:**
-
-{% highlight python %}
+```python
 # convert it to a numpy matrix
 X = pivot.as_matrix()
 X = np.matrix(X)
 
 # take the transpose of x
 X = X.T
-{% endhighlight %}
+```
 
-**In [88]:**
+**In [5]:**
 
-{% highlight python %}
+```python
 kmeans = KMeans(n_clusters=4, random_state=10).fit_predict(X) # seed of 10 for reproducibility.
 
 kmeans
-{% endhighlight %}
-
-
-
+```
 
     array([2, 1, 3, 2, 1, 1, 3, 2, 1, 2, 0, 3, 2, 0, 0, 3, 0, 3, 2, 1, 2, 1, 1,
            0, 3, 1, 1, 0, 1, 3, 1, 1, 1, 1, 2, 2, 1, 2, 0, 2, 3, 3, 1, 0, 2, 1,
@@ -368,17 +351,13 @@ kmeans
            1, 2, 1, 1, 2, 1, 1, 0])
 
 
+**In [6]:**
 
-**In [72]:**
-
-{% highlight python %}
+```python
 # get list unique customer names
 names = df_sales["Customer Last Name"].unique()
 names
-{% endhighlight %}
-
-
-
+```
 
     array(['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Miller', 'Davis',
            'Garcia', 'Rodriguez', 'Wilson', 'Martinez', 'Anderson', 'Taylor',
@@ -399,24 +378,21 @@ names
 
 
 
-**In [83]:**
+**In [7]:**
 
-{% highlight python %}
+```python
 # make dataframe of customer names
 df_names = pandas.DataFrame({"Customer Last Name": names})
 
 # add list clusters customers belong to
 df_names = df_names.assign(Cluster = kmeans)
 df_names.head()
-{% endhighlight %}
-
-
-
+```
 
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr>
       <th></th>
       <th>Customer Last Name</th>
       <th>Cluster</th>
@@ -452,11 +428,9 @@ df_names.head()
 </table>
 </div>
 
+**In [8]:**
 
-
-**In [90]:**
-
-{% highlight python %}
+```python
 range_n_clusters = [2, 3, 4, 5, 6, 7]
 
 for n_clusters in range_n_clusters:
@@ -468,7 +442,7 @@ for n_clusters in range_n_clusters:
     silhouette_avg = silhouette_score(X, cluster_labels)
     print("For n_clusters =", n_clusters,
           "The average silhouette_score is :", silhouette_avg)
-{% endhighlight %}
+```
 
     For n_clusters = 2 The average silhouette_score is : 0.0936557328349
     For n_clusters = 3 The average silhouette_score is : 0.118899428636
@@ -477,11 +451,4 @@ for n_clusters in range_n_clusters:
     For n_clusters = 6 The average silhouette_score is : 0.137179893911
     For n_clusters = 7 The average silhouette_score is : 0.116109245662
     
-
 kmeans with 5 clusters is optimal for this dataset
-
-**In [None]:**
-
-{% highlight python %}
-
-{% endhighlight %}
