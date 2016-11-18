@@ -187,6 +187,7 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -196,7 +197,8 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>1</td>  
+      <td>1</td> 
+      <td>0</td>
     </tr>
     <tr>
       <th>3</th>
@@ -206,7 +208,8 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td> 
+      <td>0</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>4</th>
@@ -218,10 +221,10 @@ pivot.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
     </tr>
     <tr>
       <th>5</th>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
