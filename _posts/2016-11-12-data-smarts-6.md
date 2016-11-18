@@ -94,6 +94,8 @@ df_offers.head() # use .head() to just show top 5 results
 </table>
 </div>
 
+<!--more-->
+
 **In [2]:**
 
 ```python
