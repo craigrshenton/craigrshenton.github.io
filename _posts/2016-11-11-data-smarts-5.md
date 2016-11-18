@@ -76,7 +76,7 @@ prob += lpSum([cost[c]*vars[c] for c in items])
 
 prob += sum(vars[c] for c in items)
 
-# add constraint representing demand for soldiers
+# add constraint to total calories
 prob += (lpSum([cost[c]*vars[c] for c in items]) == 2400)
 
 print(prob)
@@ -116,12 +116,12 @@ print(prob)
 ```python
 prob.solve()
 
-# Is the solution optimal?
+# chech if the solution is optimal
 print("Status:", LpStatus[prob.status])
-# Each of the variables is printed with it's value
+# print each variable
 for v in prob.variables():
     print(v.name, "=", v.varValue)
-# The optimised objective function value is printed to the screen    
+# print optimised objective function    
 print("Minimum Number of Items = ", value(prob.objective))
 ```
 
