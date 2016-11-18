@@ -39,12 +39,10 @@ items
 **In [2]:**
 
 ```python
-cost = dict(zip(df_cals.index, df_cals.Calories)) # calarific cost of each item
+# create dictionary with calorific value of each item
+cost = dict(zip(df_cals.index, df_cals.Calories)) 
 cost
 ```
-
-
-
 
     {'Beer': 200,
      'Bottled Water': 0,
@@ -67,10 +65,11 @@ cost
 
 ```python
 from pulp import *
-# create the LinProg object, set up as a minimisation problem
+# create the LinProg object (prob), set up as a minimisation problem
 prob = pulp.LpProblem('Diet', pulp.LpMinimize)
 
 vars = LpVariable.dicts("Number of",items, lowBound = 0, cat='Integer')
+
 # Obj Func
 prob += sum(vars[c] for c in items) # minimise num of items
 
