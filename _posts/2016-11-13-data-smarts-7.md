@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Data smarts in python- 3.0 text preprocessing"
+title: "Data smarts in python- 3.0 text pre-processing"
 tags:
     - python
     - notebook
