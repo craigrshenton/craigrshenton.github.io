@@ -177,7 +177,7 @@ def preprocess(s, lowercase=False):
 
 ```python
 print(preprocess(test))
-{% endhighlight %}
+```
 
     ['[', 'blog', ']', 'Using', 'Nullmailer', 'and', 'Mandrill', 'for', 'your', 'Ubuntu', 'Linux', 'server', 'outboud', 'mail', ':', 'http://bit.ly/ZjHOk7', '#plone']
 
