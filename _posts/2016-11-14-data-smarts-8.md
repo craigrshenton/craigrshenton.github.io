@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Data smarts in python- 3.0 naive Bayes"
+title: "Data smarts in python- 3.1 naive Bayes"
 tags:
     - python
     - notebook
