@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Data smarts in python- 3.0 cross validation"
+title: "Data smarts in python- 3.2 cross validation"
 tags:
     - python
     - notebook
