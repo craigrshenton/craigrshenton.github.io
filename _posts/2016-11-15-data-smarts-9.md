@@ -5,7 +5,7 @@ tags:
     - python
     - notebook
 ---
-Continuing from chapter 3. Naturally, in a business application we will generally not have a set of independent test data available. To get around this, we can use *cross-validation*. Here, we split the training set into two parts, a large training set (~80%), and a smaller testing set (~20%). In this example we also repeat 6 times to average out the results using *k-fold cross-validation* and scikit-learn's 'KFold' function
+Continuing from chapter 3. Naturally, in a business application we will generally not have a set of independent test data available. To get around this, we can use *cross-validation*. Following Zac Stewart's example (see [here](http://zacstewart.com/2015/04/28/document-classification-with-scikit-learn.html), we split the training set into two parts, a large training set (~80%), and a smaller testing set (~20%). In this example we also repeat 6 times to average out the results using *k-fold cross-validation* and scikit-learn's 'KFold' function
 
 **In [1]:**
 
