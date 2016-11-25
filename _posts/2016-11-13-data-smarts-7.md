@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Data smarts in python- 3.0 Naïve Bayes"
+title: "Data smarts in python- 3.0 naive Bayes"
 tags:
     - python
     - notebook
@@ -865,9 +865,9 @@ df_test
 
 Naturally, in a business application we will generally not have a set of independent test data available. To get around this, we can use *cross-validation*. Here, we split the training set into two parts, a large training set (~80%), and a smaller testing set (~20%). In this example we also repeat 6 times to average out the results using *k-fold cross-validation* and scikit-learn's 'KFold' function
 
-**In [36]:**
+**In [22]:**
 
-{% highlight python %}
+```python
 from sklearn.cross_validation import KFold
 from sklearn.metrics import confusion_matrix, f1_score
 
@@ -890,7 +890,7 @@ for train_indices, test_indices in k_fold:
 
 print('Total emails classified:', len(df_data))
 print('Score:', sum(scores)/len(scores))
-{% endhighlight %}
+```
 
     Total emails classified: 300
     Score: 0.836360280546
@@ -898,12 +898,12 @@ print('Score:', sum(scores)/len(scores))
 
 The F1 score is a measure of a test's accuracy, in both precision and recall. F1 score reaches its best value at 1 and worst at 0, so the model's score of 0.836 is not bad for a first pass
 
-**In [35]:**
+**In [23]:**
 
-{% highlight python %}
+```python
 print('Confusion matrix:')
 print(confusion)
-{% endhighlight %}
+```
 
     Confusion matrix:
     [[144   6]
