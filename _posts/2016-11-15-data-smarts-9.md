@@ -38,7 +38,7 @@ print('Score:', sum(scores)/len(scores))
     Score: 0.836360280546
 
 
-The F1 score is a measure of a test's accuracy, in both precision and recall. F1 score reaches its best value at 1 and worst at 0, so the model's score of 0.836 is not bad for a first pass
+The F1 score is a measure of a test's accuracy, in both precision and recall. F1 score reaches its best value at 1 and worst at 0, so the model's score of 0.836 is not bad for a first pass given how noisy the tweet dataset is
 
 <!--more-->
 
