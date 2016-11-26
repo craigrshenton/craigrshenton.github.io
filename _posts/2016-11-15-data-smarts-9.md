@@ -30,11 +30,11 @@ for train_indices, test_indices in k_fold:
     score = f1_score(test_y, predictions, pos_label='spam')
     scores.append(score)
 
-print('Total emails classified:', len(df_data))
+print('Total tweets classified:', len(df_data))
 print('Score:', sum(scores)/len(scores))
 ```
 
-    Total emails classified: 300
+    Total tweets classified: 300
     Score: 0.836360280546
 
 
