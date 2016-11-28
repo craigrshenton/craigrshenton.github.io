@@ -94,7 +94,7 @@ names
 
 
 
-**In [87]:**
+**In [3]:**
 
 {% highlight python %}
 # make dataframe of customer names
@@ -202,7 +202,7 @@ X
 
 
 
-**In [54]:**
+**In [52]:**
 
 {% highlight python %}
 from sklearn.metrics import pairwise_distances
@@ -231,7 +231,7 @@ dist_out
 
 
 
-**In [56]:**
+**In [53]:**
 
 {% highlight python %}
 import networkx as nx
@@ -258,7 +258,7 @@ plt.show()
 ![png]({{ site.baseurl }}/notebooks/notebook5_files/notebook5_7_1.png)
 
 
-**In [69]:**
+**In [54]:**
 
 {% highlight python %}
 r_hood = dist_out < 0.5  # filter out low similarity edges
@@ -277,15 +277,15 @@ plt.show() # show filtered graph
     Name: r-filtered similarity graph
     Type: Graph
     Number of nodes: 100
-    Number of edges: 378
-    Average degree:   7.5600
+    Number of edges: 442
+    Average degree:   8.8400
     
 
 
 ![png]({{ site.baseurl }}/notebooks/notebook5_files/notebook5_8_1.png)
 
 
-**In [76]:**
+**In [83]:**
 
 {% highlight python %}
 import community
@@ -307,15 +307,15 @@ plt.show()
     Name: community graph
     Type: Graph
     Number of nodes: 100
-    Number of edges: 378
-    Average degree:   7.5600
+    Number of edges: 442
+    Average degree:   8.8400
     
 
 
 ![png]({{ site.baseurl }}/notebooks/notebook5_files/notebook5_9_1.png)
 
 
-**In [83]:**
+**In [76]:**
 
 {% highlight python %}
 # find modularity
@@ -323,16 +323,15 @@ mod = community.modularity(part,G)
 print("modularity:", mod)
 {% endhighlight %}
 
-    modularity: 0.7116192085619842
+    modularity: 0.6749434330467096
     
 
-**In [131]:**
+**In [77]:**
 
 {% highlight python %}
 community_num = [x+1 for x in community_num] # non-zero indexing for commmunity list
 community_dict = dict(zip(names, community_num))
 df_sales['community']=df_sales.name.map(community_dict) # map communities to sales
-df_sales = df_sales.drop('id', 1) # don't need this now
 df_sales.head() # note: first five all in same community
 {% endhighlight %}
 
@@ -386,15 +385,15 @@ df_sales.head() # note: first five all in same community
 
 
 
-**In [132]:**
+**In [78]:**
 
 {% highlight python %}
 from collections import Counter
 
-count_dict = dict(zip(df_sales['community'], df_sales['offer']))
+count_dict = dict(zip(df_sales['community'], df_sales['offer'])) # create dictonary of all offers purchased by each community
 count_list = Counter(count_dict)
-df_communities = pd.DataFrame(sorted(count_list.most_common()))
-df_communities.columns = ['Community', 'Most Common Offer']
+df_communities = pd.DataFrame(sorted(count_list.most_common())) # find most common offer purchased by each community
+df_communities.columns = ['Community', 'Offer']
 df_communities
 {% endhighlight %}
 
@@ -407,7 +406,7 @@ df_communities
     <tr style="text-align: right;">
       <th></th>
       <th>Community</th>
-      <th>Most Common Offer</th>
+      <th>Offer</th>
     </tr>
   </thead>
   <tbody>
@@ -429,17 +428,17 @@ df_communities
     <tr>
       <th>3</th>
       <td>4</td>
-      <td>18</td>
+      <td>30</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>30</td>
+      <td>5</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
-      <td>5</td>
+      <td>23</td>
     </tr>
     <tr>
       <th>6</th>
@@ -454,7 +453,7 @@ df_communities
     <tr>
       <th>8</th>
       <td>9</td>
-      <td>30</td>
+      <td>22</td>
     </tr>
     <tr>
       <th>9</th>
@@ -464,31 +463,6 @@ df_communities
     <tr>
       <th>10</th>
       <td>11</td>
-      <td>31</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>31</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>13</td>
-      <td>32</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>14</td>
-      <td>32</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>15</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>16</td>
       <td>21</td>
     </tr>
   </tbody>
@@ -497,12 +471,94 @@ df_communities
 
 
 
-**In [133]:**
+**In [79]:**
 
 {% highlight python %}
-df_offers = pd.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch02/WineKMC.xlsx','rb'), sheetname=0) 
-df_communities['Origin']=df_offers['Offer #'].map(df_offers.Origin) # map offer region to communities
-df_communities['Varietal']=df_offers['Offer #'].map(df_offers.Varietal) # map offer name to communities
+# load info about offers
+df_offers = pd.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch02/WineKMC.xlsx','rb'), sheetname=0)
+df_offers.rename(columns={'Offer #':'Offer'}, inplace=True)
+df_offers.head()
+{% endhighlight %}
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Offer</th>
+      <th>Campaign</th>
+      <th>Varietal</th>
+      <th>Minimum Qty (kg)</th>
+      <th>Discount (%)</th>
+      <th>Origin</th>
+      <th>Past Peak</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>January</td>
+      <td>Malbec</td>
+      <td>72</td>
+      <td>56</td>
+      <td>France</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>January</td>
+      <td>Pinot Noir</td>
+      <td>72</td>
+      <td>17</td>
+      <td>France</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>February</td>
+      <td>Espumante</td>
+      <td>144</td>
+      <td>32</td>
+      <td>Oregon</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>February</td>
+      <td>Champagne</td>
+      <td>72</td>
+      <td>48</td>
+      <td>France</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>February</td>
+      <td>Cabernet Sauvignon</td>
+      <td>144</td>
+      <td>44</td>
+      <td>New Zealand</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+**In [80]:**
+
+{% highlight python %}
+df_communities = df_communities.merge(df_offers, on='Offer', how='left') # merge info on offers with community index
+df_communities.rename(columns={'Offer':'Offer Most Purchased'}, inplace=True) # add more accurate lable 
 df_communities
 {% endhighlight %}
 
@@ -515,9 +571,13 @@ df_communities
     <tr style="text-align: right;">
       <th></th>
       <th>Community</th>
-      <th>Most Common Offer</th>
-      <th>Origin</th>
+      <th>Offer Most Purchased</th>
+      <th>Campaign</th>
       <th>Varietal</th>
+      <th>Minimum Qty (kg)</th>
+      <th>Discount (%)</th>
+      <th>Origin</th>
+      <th>Past Peak</th>
     </tr>
   </thead>
   <tbody>
@@ -525,113 +585,122 @@ df_communities
       <th>0</th>
       <td>1</td>
       <td>26</td>
-      <td>France</td>
+      <td>October</td>
       <td>Pinot Noir</td>
+      <td>144</td>
+      <td>83</td>
+      <td>Australia</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2</td>
       <td>31</td>
-      <td>Oregon</td>
-      <td>Espumante</td>
+      <td>December</td>
+      <td>Champagne</td>
+      <td>72</td>
+      <td>89</td>
+      <td>France</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>2</th>
       <td>3</td>
       <td>30</td>
+      <td>December</td>
+      <td>Malbec</td>
+      <td>6</td>
+      <td>54</td>
       <td>France</td>
-      <td>Champagne</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>3</th>
       <td>4</td>
-      <td>18</td>
-      <td>New Zealand</td>
-      <td>Cabernet Sauvignon</td>
+      <td>30</td>
+      <td>December</td>
+      <td>Malbec</td>
+      <td>6</td>
+      <td>54</td>
+      <td>France</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>30</td>
-      <td>Chile</td>
-      <td>Prosecco</td>
+      <td>5</td>
+      <td>February</td>
+      <td>Cabernet Sauvignon</td>
+      <td>144</td>
+      <td>44</td>
+      <td>New Zealand</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>5</th>
       <td>6</td>
-      <td>5</td>
-      <td>Australia</td>
-      <td>Prosecco</td>
+      <td>23</td>
+      <td>September</td>
+      <td>Chardonnay</td>
+      <td>144</td>
+      <td>39</td>
+      <td>South Africa</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
       <td>29</td>
-      <td>South Africa</td>
-      <td>Espumante</td>
+      <td>November</td>
+      <td>Pinot Grigio</td>
+      <td>6</td>
+      <td>87</td>
+      <td>France</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
       <td>31</td>
-      <td>Chile</td>
-      <td>Chardonnay</td>
+      <td>December</td>
+      <td>Champagne</td>
+      <td>72</td>
+      <td>89</td>
+      <td>France</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>8</th>
       <td>9</td>
-      <td>30</td>
-      <td>California</td>
-      <td>Prosecco</td>
+      <td>22</td>
+      <td>August</td>
+      <td>Champagne</td>
+      <td>72</td>
+      <td>63</td>
+      <td>France</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>9</th>
       <td>10</td>
       <td>31</td>
-      <td>France</td>
+      <td>December</td>
       <td>Champagne</td>
+      <td>72</td>
+      <td>89</td>
+      <td>France</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>10</th>
       <td>11</td>
-      <td>31</td>
-      <td>Australia</td>
-      <td>Prosecco</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>12</td>
-      <td>31</td>
-      <td>Chile</td>
-      <td>Merlot</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>13</td>
-      <td>32</td>
-      <td>Chile</td>
-      <td>Merlot</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>14</td>
-      <td>32</td>
-      <td>Italy</td>
-      <td>Cabernet Sauvignon</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>15</td>
-      <td>4</td>
-      <td>California</td>
-      <td>Merlot</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>16</td>
       <td>21</td>
-      <td>Germany</td>
-      <td>Pinot Noir</td>
+      <td>August</td>
+      <td>Champagne</td>
+      <td>12</td>
+      <td>50</td>
+      <td>California</td>
+      <td>False</td>
     </tr>
   </tbody>
 </table>
