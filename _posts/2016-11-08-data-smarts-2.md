@@ -6,7 +6,7 @@ tags:
     - notebook
 ---
 
-Continuing from chapter 1. Plotting a basic bar chart in python.
+Continuing from chapter 1. Plotting a bar chart in python.
 
 **In [1]:**
 
