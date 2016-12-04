@@ -55,7 +55,7 @@ print(confusion)
 
 
 A confusion matrix helps us understand how the model performed for individual features. Out of the 300 tweets,
-the model incorrectly classified about 39 tweets that are about the produt, and 6 tweets that are not
+the model incorrectly classified about 39 tweets that are about the product, and 6 tweets that are not
 
 In order to improve the results there are two approaches we can take:
 - We could improve the data pre-processing by cleaning the data with more filters
