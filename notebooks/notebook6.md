@@ -7,7 +7,7 @@ tags:
 ---
 Load data from http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch06.zip, RetailMart.xlsx
 
-**In [5]:**
+**In [1]:**
 
 {% highlight python %}
 # code written in py_3.0
@@ -18,7 +18,7 @@ import numpy as np
 
 Load customer account data - i.e., past product sales data
 
-**In [56]:**
+**In [2]:**
 
 {% highlight python %}
 # find path to your RetailMart.xlsx
@@ -172,7 +172,7 @@ df_accounts.head()
 
 We need to categorise the 'Pregnant' column so that it can only take on one of two (in this case) possabilities. Here 1 = pregnant, and 0 = not pregnant
 
-**In [122]:**
+**In [3]:**
 
 {% highlight python %}
 df_accounts['Pregnant'] = df_accounts['Pregnant'].astype('category') # set col type
@@ -180,7 +180,7 @@ df_accounts['Pregnant'] = df_accounts['Pregnant'].astype('category') # set col t
 
 Following Greg Lamp over at the Yhat Blog (see [here](http://blog.yhat.com/posts/logistic-regression-python-rodeo.html)), we need to 'dummify' (i.e., separate out) the catagorical variables: gender and residency
 
-**In [134]:**
+**In [4]:**
 
 {% highlight python %}
 # dummify gender var
@@ -196,7 +196,7 @@ print(dummy_gender.head())
     4         1         0         0
     
 
-**In [135]:**
+**In [5]:**
 
 {% highlight python %}
 # dummify residency var
@@ -212,7 +212,7 @@ print(dummy_resident.head())
     4           1           0           0
     
 
-**In [140]:**
+**In [6]:**
 
 {% highlight python %}
 # make clean dataframe for regression model
@@ -375,7 +375,7 @@ data.head()
 
 
 
-**In [141]:**
+**In [7]:**
 
 {% highlight python %}
 from patsy import dmatrices
@@ -393,7 +393,7 @@ result = logit.fit()
              Iterations 8
     
 
-**In [142]:**
+**In [8]:**
 
 {% highlight python %}
 print('Parameters:')
@@ -427,8 +427,8 @@ print(result.summary())
     Dep. Variable:               Pregnant   No. Observations:                 1000
     Model:                          Logit   Df Residuals:                      981
     Method:                           MLE   Df Model:                           18
-    Date:                Mon, 28 Nov 2016   Pseudo R-squ.:                  0.4606
-    Time:                        21:02:31   Log-Likelihood:                -373.88
+    Date:                Mon, 05 Dec 2016   Pseudo R-squ.:                  0.4606
+    Time:                        00:46:36   Log-Likelihood:                -373.88
     converged:                       True   LL-Null:                       -693.15
                                             LLR p-value:                6.050e-124
     ==========================================================================================
@@ -455,6 +455,101 @@ print(result.summary())
     Maternity_Clothes          2.0032      0.330      6.074      0.000         1.357     2.650
     ==========================================================================================
     
+
+logistic reg revisited with sklearn
+
+**In [9]:**
+
+{% highlight python %}
+# define X and y
+X = data[train_cols]
+y = df_accounts['Pregnant']
+
+# train/test split
+from sklearn.cross_validation import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1)
+
+# train a logistic regression model
+from sklearn.linear_model import LogisticRegression
+logreg = LogisticRegression(C=1e9)
+logreg.fit(X_train, y_train)
+
+# make predictions for testing set
+y_pred_class = logreg.predict(X_test)
+
+# calculate testing accuracy
+from sklearn import metrics
+print(metrics.accuracy_score(y_test, y_pred_class))
+{% endhighlight %}
+
+    0.88
+    
+
+    D:\Anaconda\lib\site-packages\sklearn\cross_validation.py:44: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+      "This module will be removed in 0.20.", DeprecationWarning)
+    
+
+**In [21]:**
+
+{% highlight python %}
+# predict probability of survival
+y_pred_prob = logreg.predict_proba(X_test)[:, 1]
+
+import matplotlib.pyplot as plt
+
+# plot ROC curve
+fpr, tpr, thresholds = metrics.roc_curve(y_test, y_pred_prob)
+plt.plot(fpr, tpr)
+plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
+plt.xlim([-0.05, 1.0])
+plt.ylim([0.0, 1.05])
+plt.gca().set_aspect('equal', adjustable='box')
+plt.xlabel('False Positive Rate (1 - Specificity)')
+plt.ylabel('True Positive Rate (Sensitivity)')
+plt.show()
+{% endhighlight %}
+
+
+![png]({{ site.baseurl }}/notebooks/notebook6_files/notebook6_14_0.png)
+
+
+**In [11]:**
+
+{% highlight python %}
+# calculate AUC
+print(metrics.roc_auc_score(y_test, y_pred_prob))
+{% endhighlight %}
+
+    0.94394259722
+    
+
+**In [12]:**
+
+{% highlight python %}
+# histogram of predicted probabilities grouped by actual response value
+df = pd.DataFrame({'probability':y_pred_prob, 'actual':y_test})
+df.hist(column='probability', by='actual', sharex=True, sharey=True)
+plt.show()
+{% endhighlight %}
+
+
+![png]({{ site.baseurl }}/notebooks/notebook6_files/notebook6_16_0.png)
+
+
+**In [13]:**
+
+{% highlight python %}
+# calculate cross-validated AUC
+from sklearn.cross_validation import cross_val_score
+cross_val_score(logreg, X, y, cv=10, scoring='roc_auc').mean()
+{% endhighlight %}
+
+
+
+
+    0.89871999999999996
+
+
 
 Random forest feature selection
 
@@ -496,7 +591,7 @@ plt.show()
 {% endhighlight %}
 
 
-![png]({{ site.baseurl }}/notebooks/notebook6_files/notebook6_14_0.png)
+![png]({{ site.baseurl }}/notebooks/notebook6_files/notebook6_20_0.png)
 
 
 We can see that the purchase of Folic Acid is a much better predictor of a customer pregnancy, surprisingly more so than an intrest in Prenatal Yoga (presumably more expectant mother use folic acid than take up yoga)---this information could be used to accurately target the advertisment of baby products
