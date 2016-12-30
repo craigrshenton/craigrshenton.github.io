@@ -1,23 +1,18 @@
 ---
 layout: post
-title: "Data smarts in python- 5.2 logit (revisited)"
+title: "data_smart_project_1"
 tags:
     - python
     - notebook
 ---
-
-Continuing with my python translation of John W. Foreman's 2014 book "Data Smart: Using Data Science to Transform Information into Insight".
-
-In this chapter we are asked to predict whether or not customers are pregnant just from their purchasing habits.
+#
 
 ## 1. Prepare Problem
 #### a) Load libraries
 
-**In [1]:**
+**In [86]:**
 
 ```python
-# code written in py_3.0
-
 import pandas as pd
 import numpy as np
 from pandas.tools.plotting import scatter_matrix
@@ -25,7 +20,6 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
-from sklearn import metrics
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
@@ -35,47 +29,50 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
+from sklearn import metrics
 ```
 
 #### b) Load dataset
 
 Download customer account data from [Wiley's website](http://media.wiley.com/product_ancillary/6X/11186614/DOWNLOAD/ch06.zip), RetailMart.xlsx
 
-**In [2]:**
+**In [17]:**
 
 ```python
-# Find path to your RetailMart.xlsx
-dataset = pd.read_excel(open('.../ch06/RetailMart.xlsx','rb'), sheetname=0)
+# find path to your RetailMart.xlsx
+dataset = pd.read_excel(open('C:/Users/craigrshenton/Desktop/Dropbox/excel_data_sci/ch06/RetailMart.xlsx','rb'), sheetname=0)
 dataset = dataset.drop('Unnamed: 17', 1) # drop empty col
 dataset.rename(columns={'PREGNANT':'Pregnant'}, inplace=True)
 dataset.rename(columns={'Home/Apt/ PO Box':'Residency'}, inplace=True) # add simpler col name
 dataset.columns = [x.strip().replace(' ', '_') for x in dataset.columns] # python does not like spaces in var names
 ```
 
-The 'Pregnant' column can only take on one of two (in this case) possabilities, where 1 = pregnant, and 0 = not pregnant
+The 'Pregnant' column can only take on one of two (in this case) possabilities. Here 1 = pregnant, and 0 = not pregnant
 
 ##  2. Summarize Data
 #### a) Descriptive statistics
 
-**In [3]:**
+**In [18]:**
 
 ```python
-# Shape
+# shape
 print(dataset.shape)
 ```
 
     (1000, 18)
     
 
-**In [4]:**
+**In [36]:**
 
 ```python
-# Types
+# types
 print(dataset.dtypes)
 ```
 
-    Implied_Gender            uint8
-    Residency                 uint8
+    Gender_M                  uint8
+    Gender_U                  uint8
+    Resident_H                uint8
+    Resident_P                uint8
     Pregnancy_Test            int64
     Birth_Control             int64
     Feminine_Hygiene          int64
@@ -95,10 +92,10 @@ print(dataset.dtypes)
     dtype: object
     
 
-**In [5]:**
+**In [19]:**
 
 ```python
-# Head
+# head
 dataset.head()
 ```
 
@@ -108,13 +105,26 @@ dataset.head()
 <div>
 <table border="1" class="dataframe">
   <thead>
-    <tr>
+    <tr style="text-align: right;">
       <th></th>
       <th>Implied_Gender</th>
       <th>Residency</th>
       <th>Pregnancy_Test</th>
       <th>Birth_Control</th>
       <th>Feminine_Hygiene</th>
+      <th>Folic_Acid</th>
+      <th>Prenatal_Vitamins</th>
+      <th>Prenatal_Yoga</th>
+      <th>Body_Pillow</th>
+      <th>Ginger_Ale</th>
+      <th>Sea_Bands</th>
+      <th>Stopped_buying_ciggies</th>
+      <th>Cigarettes</th>
+      <th>Smoking_Cessation</th>
+      <th>Stopped_buying_wine</th>
+      <th>Wine</th>
+      <th>Maternity_Clothes</th>
+      <th>Pregnant</th>
     </tr>
   </thead>
   <tbody>
@@ -125,6 +135,19 @@ dataset.head()
       <td>1</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>1</th>
@@ -133,6 +156,19 @@ dataset.head()
       <td>1</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
@@ -141,6 +177,19 @@ dataset.head()
       <td>1</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>3</th>
@@ -149,6 +198,19 @@ dataset.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>4</th>
@@ -157,6 +219,19 @@ dataset.head()
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
@@ -164,10 +239,10 @@ dataset.head()
 
 
 
-**In [6]:**
+**In [20]:**
 
 ```python
-# Feature distribution
+# feature distribution
 print(dataset.groupby('Implied_Gender').size())
 ```
 
@@ -178,10 +253,10 @@ print(dataset.groupby('Implied_Gender').size())
     dtype: int64
     
 
-**In [7]:**
+**In [21]:**
 
 ```python
-# Target distribution
+# target distribution
 print(dataset.groupby('Pregnant').size())
 ```
 
@@ -191,10 +266,10 @@ print(dataset.groupby('Pregnant').size())
     dtype: int64
     
 
-**In [8]:**
+**In [82]:**
 
 ```python
-# Correlation
+# correlation
 r = dataset.corr(method='pearson')
 id_matrix = np.identity(r.shape[0]) # create identity matrix
 r = r-id_matrix # remove same-feature correlations
@@ -215,10 +290,10 @@ We can see no features with significant correlation coefficents (i.e., $r$ value
 
 We need to 'dummify' (i.e., separate out) the catagorical variables: implied gender and residency
 
-**In [9]:**
+**In [22]:**
 
 ```python
-# Dummify gender variable
+# dummify gender variable
 dummy_gender = pd.get_dummies(dataset['Implied_Gender'], prefix='Gender')
 print(dummy_gender.head())
 ```
@@ -231,10 +306,10 @@ print(dummy_gender.head())
     4         1         0         0
     
 
-**In [10]:**
+**In [23]:**
 
 ```python
-# Dummify residency variable
+# dummify residency variable
 dummy_resident = pd.get_dummies(dataset['Residency'], prefix='Resident')
 print(dummy_resident.head())
 ```
@@ -247,7 +322,7 @@ print(dummy_resident.head())
     4           1           0           0
     
 
-**In [11]:**
+**In [24]:**
 
 ```python
 # Drop catagorical variables
@@ -256,10 +331,162 @@ dataset = dataset.drop('Residency', 1)
 
 # Add dummy variables
 dataset = pd.concat([dummy_gender.ix[:, 'Gender_M':],dummy_resident.ix[:, 'Resident_H':],dataset], axis=1)
+dataset.head()
 ```
 
 
-**In [12]:**
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Gender_M</th>
+      <th>Gender_U</th>
+      <th>Resident_H</th>
+      <th>Resident_P</th>
+      <th>Pregnancy_Test</th>
+      <th>Birth_Control</th>
+      <th>Feminine_Hygiene</th>
+      <th>Folic_Acid</th>
+      <th>Prenatal_Vitamins</th>
+      <th>Prenatal_Yoga</th>
+      <th>Body_Pillow</th>
+      <th>Ginger_Ale</th>
+      <th>Sea_Bands</th>
+      <th>Stopped_buying_ciggies</th>
+      <th>Cigarettes</th>
+      <th>Smoking_Cessation</th>
+      <th>Stopped_buying_wine</th>
+      <th>Wine</th>
+      <th>Maternity_Clothes</th>
+      <th>Pregnant</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+**In [31]:**
 
 ```python
 # Make clean dataframe for regression model
@@ -272,11 +499,11 @@ y = array[:,n_features-1] # target
 ## 4. Evaluate Algorithms
 #### a) Split-out validation dataset
 
-**In [13]:**
+**In [32]:**
 
 ```python
 # Split-out validation dataset
-validation_size = 0.20 # 20% kept separate
+validation_size = 0.20
 seed = 7
 X_train, X_validation, Y_train, Y_validation = train_test_split(X, y,
 test_size=validation_size, random_state=seed)
@@ -284,7 +511,7 @@ test_size=validation_size, random_state=seed)
 
 #### b) Spot Check Algorithms
 
-**In [14]:**
+**In [33]:**
 
 ```python
 # Spot-Check Algorithms
@@ -296,7 +523,7 @@ models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC()))
 
-# Evaluate each model in turn
+# evaluate each model in turn
 results = []
 names = []
 for name, model in models:
@@ -318,10 +545,10 @@ for name, model in models:
 
 #### c) Select The Best Model
 
-**In [15]:**
+**In [34]:**
 
 ```python
-# Compare algorithms
+# Compare Algorithms
 fig = plt.figure()
 fig.suptitle('Algorithm Comparison')
 ax = fig.add_subplot(111)
@@ -338,7 +565,7 @@ plt.show()
 
 Linear Discriminant Analysis is just about the most accurate model. Now test the accuracy of the model on the validation dataset.
 
-**In [16]:**
+**In [83]:**
 
 ```python
 lda = LinearDiscriminantAnalysis()
@@ -361,13 +588,13 @@ print(classification_report(Y_validation, predictions))
     
     
 
-**In [17]:**
+**In [91]:**
 
 ```python
-# Predict probability of survival
+# predict probability of survival
 y_pred_prob = lda.predict_proba(X_validation)[:, 1]
 
-# Plot ROC curve
+# plot ROC curve
 fpr, tpr, thresholds = metrics.roc_curve(Y_validation, y_pred_prob)
 plt.plot(fpr, tpr)
 plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
@@ -383,13 +610,18 @@ plt.show()
 ![png]({{ site.baseurl }}/notebooks/data_smart_project_1_files/data_smart_project_1_27_0.png)
 
 
-**In [18]:**
+**In [89]:**
 
 ```python
-# Calculate AUC
+# calculate AUC
 print(metrics.roc_auc_score(Y_validation, y_pred_prob))
 ```
 
     0.870784825371
     
 
+**In [None]:**
+
+```python
+
+```
