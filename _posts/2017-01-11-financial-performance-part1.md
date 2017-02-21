@@ -1,12 +1,10 @@
 ---
 layout: post
-title: " Financial Performance in Real-Estate. "
+title: " Financial Performance in Real-Estate. Part 1 - Returns "
 tags:
     - python
     - notebook
 ---
-
-## Part 1. Returns
 
 In this three part series I'm going to be looking at how we can use data science to measure the financial performance of real-estate (property) assets. I will be introducing concepts from finance ('alpha' in part 2. and 'beta' in part 3.), but adapting them for everyday use. In part 1. I first clean and prepare the [Land Registry](http://landregistry.data.gov.uk/) transaction data and explore the distribution of returns (i.e., pre-tax profits) we can expect form the UK housing market.
 
