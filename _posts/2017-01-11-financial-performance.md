@@ -1,12 +1,12 @@
 ---
 layout: post
-title: " Measuring the financial performance of real-estate assets. Part 1. Returns "
+title: " Financial Performance in Real-Estate. Part 1. Returns "
 tags:
     - python
     - notebook
 ---
 
-In this three part series I'm going to be looking at how we can use data science to measure the financial performance of real-estate (property) assets. I will be introducing concepts from high finance (alpha $\alpha$ in part 2. and beta $\beta$ in part 3.), but adapting them for everyday use. In part 1. I first clean and prepare the [Land Registry](http://landregistry.data.gov.uk/) transaction data and explore the distribution of returns (pre-tax profits) we can expect form the UK housing market.
+In this three part series I'm going to be looking at how we can use data science to measure the financial performance of real-estate (property) assets. I will be introducing concepts from finance ('alpha' in part 2. and 'beta' in part 3.), but adapting them for everyday use. In part 1. I first clean and prepare the [Land Registry](http://landregistry.data.gov.uk/) transaction data and explore the distribution of returns (i.e., pre-tax profits) we can expect form the UK housing market.
 
 ## 1.0 Land Registry - Prices Paid database
 
@@ -458,8 +458,4 @@ for index, group in grouped:
 
 Interestingly, Detached and Semi-Detached properties performed the worst. I was actually expecting flats to do worse.
 
-Returns are not the only way of measuring performance. In the next part of this series, I will be looking at a more sophisticated measure called alpha ($\alpha$) that shows the *relative* performance of an asset compared a market benchmark.
-
-```python
-
-```
+Returns are not the only way of measuring performance. In the next part of this series, I will be looking at a more sophisticated measure called 'alpha' that shows the *relative* performance of an asset compared a market benchmark.
